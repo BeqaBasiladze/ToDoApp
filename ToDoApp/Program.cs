@@ -26,6 +26,49 @@ var provider = service.BuildServiceProvider();
 
 var taskService = provider.GetRequiredService<ITaskService>();
 
+
+Console.WriteLine("Выберите действие:");
+Console.WriteLine("1 - Показать все задачи");
+Console.WriteLine("2 - Поиск по заголовку");
+Console.WriteLine("3 - Выйти");
+Console.Write("Введите номер действия: ");
+var operation = Console.ReadLine();
+bool isExit = false;
+
+while (isExit)
+{
+    switch (operation)
+    {
+        case "1":
+            var allTasks = await taskService.GetAllAsync();
+            foreach (var task in allTasks)
+            {
+                Console.WriteLine($"{task.Id}. {task.Title} - Completed : {task.IsCompleted} Priority : {task.Priority} DueTime : {task.DueTime}");
+            }
+            break;
+            case "2":
+            Console.Write("Введите заголовок задачи для поиска: ");
+            var title = Console.ReadLine();
+            var tasksByTitle = await taskService.GetAllAsync();
+            var foundTasks = tasksByTitle.Where(t => t.Title.Contains(title, StringComparison.OrdinalIgnoreCase)).ToList();
+            if (foundTasks.Count > 0)
+            {
+                foreach (var task in foundTasks)
+                {
+                    Console.WriteLine($"{task.Id}. {task.Title} - Completed : {task.IsCompleted} Priority : {task.Priority} DueTime : {task.DueTime}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Задачи не найдены.");
+            }
+            break;
+            case "3":
+            isExit = true;
+            break;
+    }
+}
+
 Console.Write("Введите название задачи");
 var getTitle = Console.ReadLine();
 Console.Write("Введите описание задачи");
