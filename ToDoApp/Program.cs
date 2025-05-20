@@ -27,17 +27,20 @@ var provider = service.BuildServiceProvider();
 var taskService = provider.GetRequiredService<ITaskService>();
 
 
-Console.WriteLine("Выберите действие:");
-Console.WriteLine("1 - Показать все задачи");
-Console.WriteLine("2 - Поиск по заголовку");
-Console.WriteLine("3 - Добавить Задачу");
-Console.WriteLine("4 - Выйти");
-Console.Write("Введите номер действия: ");
-var operation = Console.ReadLine();
 bool isExit = false;
-
 while (isExit)
 {
+
+    Console.WriteLine("Выберите действие:");
+    Console.WriteLine("1 - Показать все задачи");
+    Console.WriteLine("2 - Поиск по заголовку");
+    Console.WriteLine("3 - Добавить Задачу");
+    Console.WriteLine("4 - Выйти");
+    Console.Write("Введите номер действия: ");
+    var operation = Console.ReadLine();
+    Thread.Sleep(2000);
+    Console.Clear();
+
     switch (operation)
     {
         case "1":
