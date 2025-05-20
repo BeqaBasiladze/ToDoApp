@@ -30,7 +30,8 @@ var taskService = provider.GetRequiredService<ITaskService>();
 Console.WriteLine("Выберите действие:");
 Console.WriteLine("1 - Показать все задачи");
 Console.WriteLine("2 - Поиск по заголовку");
-Console.WriteLine("3 - Выйти");
+Console.WriteLine("3 - Добавить Задачу");
+Console.WriteLine("4 - Выйти");
 Console.Write("Введите номер действия: ");
 var operation = Console.ReadLine();
 bool isExit = false;
@@ -64,35 +65,31 @@ while (isExit)
             }
             break;
             case "3":
+            Console.Write("Введите название задачи");
+            var getTitle = Console.ReadLine();
+            Console.Write("Введите описание задачи");
+            var getDescription = Console.ReadLine();
+            Console.Write("Введите priority задачи");
+            var getPriority = Console.ReadLine();
+            Console.Write("Введите DueDate задачи");
+            var getDueDate = Convert.ToDateTime(Console.ReadLine());
+
+            var newTask = new TaskItem
+            {
+                Title = getTitle,
+                Description = getDescription,
+                Priority = getPriority,
+                DueTime = getDueDate,
+                IsCompleted = false
+            };
+
+            await taskService.AddAsync(newTask);
+            Console.WriteLine("Новая задача добавлена!");
+            Thread.Sleep(2000);
+            Console.Clear();
+            break;
+        case "4":
             isExit = true;
             break;
     }
-}
-
-Console.Write("Введите название задачи");
-var getTitle = Console.ReadLine();
-Console.Write("Введите описание задачи");
-var getDescription = Console.ReadLine();
-Console.Write("Введите priority задачи");
-var getPriority = Console.ReadLine();
-Console.Write("Введите DueDate задачи");
-var getDueDate = Convert.ToDateTime(Console.ReadLine());
-
-var newTask = new TaskItem
-{
-    Title = getTitle,
-    Description = getDescription,
-    Priority = getPriority,
-    DueTime = getDueDate,
-    IsCompleted = false
-};
-
-await taskService.AddAsync(newTask);
-Console.WriteLine("Новая задача добавлена!");
-
-var tasks = await taskService.GetByPriorityAndDueDateAsync("High", getDueDate);
-
-foreach(var task in tasks)
-{
-    Console.WriteLine($"{task.Id}. {task.Title} - Completed : {task.IsCompleted} Priority : {task.Priority} DueTime : {task.DueTime}");
 }
